@@ -59,6 +59,7 @@
     writeBin(data, con=tmp)
     data <- paste(readLines(con <- gzfile(tmp), encoding = "UTF-8"), collapse = "\n")
     close(con)
+    
   } else {
     data <- RCurl::getURL(url, 
                           httpheader = header,
@@ -66,6 +67,19 @@
                           verbose = verbose,
                           #                     cainfo = cert, #add SSL certificate
                           ssl.verifypeer = TRUE)
+    
+    # ####
+    # check for Error - Alexey Seleznev
+    xml_data  <- xml2::read_xml(data)
+    xml_error <- xml_find_all(xml_data, "ApiError") 
+    
+    if ( length(xml_error) > 0 ) {
+      
+      stop(xml_text(xml_error))
+      
+    }
+    # ####
+    
   }
   # check 
   valid <- grepl(attr(statement,"reportType"),data)
@@ -79,17 +93,7 @@
     }
   }
   
-    # ####
-    # check for Error - Alexey Seleznev
-    xml_data  <- xml2::read_xml(data)
-    xml_error <- xml_find_all(xml_data, "ApiError") 
-    
-    if ( length(xml_error) > 0 ) {
-      
-      stop(xml_text(xml_error))
-      
-    }
-    # ####
+
   data 
   
 }
