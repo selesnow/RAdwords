@@ -19,7 +19,8 @@ Depends:
     R (>= 3.0.0)
 Imports:
     RCurl,
-    rjson
+    rjson,
+    xml2
 Suggests:
     testthat
 License: MIT + file LICENSE
