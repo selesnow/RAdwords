@@ -50,6 +50,7 @@
                                 #                           cainfo = cert, #add SSL certificate
                                 ssl.verifypeer = TRUE)
     
+    return(data)
     # ####
     # check for Error - Alexey Seleznev
     xml_data  <- xml2::read_xml(data)
