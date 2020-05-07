@@ -50,18 +50,6 @@
                                 #                           cainfo = cert, #add SSL certificate
                                 ssl.verifypeer = TRUE)
     
-    return(data)
-    # ####
-    # check for Error - Alexey Seleznev
-    xml_data  <- xml2::read_xml(data)
-    xml_error <- xml_find_all(xml_data, "ApiError") 
-    
-    if ( length(xml_error) > 0 ) {
-      
-      stop(xml_text(xml_error))
-      
-    }
-    # ####
     
     tmp <- tempfile()
     if(.Platform$OS.type == "unix" && file.exists('/dev/shm') && file.info('/dev/shm')$isdir) {
@@ -90,6 +78,18 @@
       data <- changeNames(data)
     }
   }
+  
+    # ####
+    # check for Error - Alexey Seleznev
+    xml_data  <- xml2::read_xml(data)
+    xml_error <- xml_find_all(xml_data, "ApiError") 
+    
+    if ( length(xml_error) > 0 ) {
+      
+      stop(xml_text(xml_error))
+      
+    }
+    # ####
   data 
   
 }
